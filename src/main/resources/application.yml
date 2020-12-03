@@ -1,0 +1,42 @@
+server:
+  port: 8099
+
+spring:
+  application:
+    name: simple-test-web
+  #H2 datasource
+  datasource:
+    url: jdbc:h2:~/remote;AUTO_SERVER=TRUE;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 123456
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  remote:
+    exec:
+      ip: 192.168.172.129
+      osUsername: cmz
+      password: Chenjia1
+  upload:
+    path: upload
+
+
+#ORM mybatis-plus
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 配置下划线自动转驼峰
+    map-underscore-to-camel-case: true
+
+#logger
+logging:
+  file:
+    max-size: 200MB
+  pattern:
+    console: '[%X{flowno}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
+    file: ${logging.pattern.console}
+  level:
+    'com.test': 'DEBUG'
