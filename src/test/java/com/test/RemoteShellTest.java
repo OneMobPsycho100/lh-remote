@@ -1,7 +1,7 @@
 package com.test;
 
 import com.simple.shell.SimpleShellApplication;
-import com.simple.shell.common.RemoteShellFileExecutor;
+import com.simple.shell.config.RemoteShellExecutor;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,11 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RemoteShellTest {
 
     @Autowired
-    private RemoteShellFileExecutor remoteShellFileExecutor;
+    private RemoteShellExecutor remoteShellExecutor;
 
     @org.junit.Test
     public void test() throws Exception {
-        boolean exec = remoteShellFileExecutor.exec("/home/cmz/files.csv", "C:\\Users\\Administrator\\Desktop");
+        boolean exec = remoteShellExecutor.download("/home/cmz/files.csv", "C:\\Users\\Administrator\\Desktop");
         System.out.println(exec);
     }
 }

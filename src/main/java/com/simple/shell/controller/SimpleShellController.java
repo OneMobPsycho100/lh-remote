@@ -2,8 +2,8 @@ package com.simple.shell.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.guzhandong.springframework.boot.ssh2.remote.RemoteShellExecutor;
 import com.simple.shell.common.Result;
+import com.simple.shell.config.RemoteShellExecutor;
 import com.simple.shell.vo.ResScriptInfoVO;
 import com.simple.shell.vo.req.ReqExecuteVO;
 import com.simple.shell.vo.req.ReqScriptInfoVO;

@@ -3,7 +3,7 @@ package com.simple.shell.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.guzhandong.springframework.boot.ssh2.remote.RemoteShellExecutor;
+import com.simple.shell.config.RemoteShellExecutor;
 import com.simple.shell.dao.ScriptRepository;
 import com.simple.shell.pojo.ScriptEntity;
 import com.simple.shell.pojo.ScriptExpandEntity;
@@ -37,7 +37,7 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptRepository, ScriptEntit
 
     private final IScriptExpandService scriptExpandService;
 
-    private final RemoteShellExecutor  remoteShellExecutor;
+    private final RemoteShellExecutor remoteShellExecutor;
 
     @Autowired
     public ScriptServiceImpl(IScriptExpandService scriptExpandService, RemoteShellExecutor remoteShellExecutor) {
