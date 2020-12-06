@@ -71,8 +71,8 @@ public class RemoteShellExecutor {
                 stuErr = session.getStderr();
                 outStr = stream2String(stuOut, this.charset);
                 outErr = stream2String(stuErr, this.charset);
-                callback.getStdoutString(outStr);
-                callback.getStderrString(outErr);
+                callback.setStdoutString(outStr);
+                callback.setStderrString(outErr);
             }
             if (resultCode != null) {
                 session.waitForCondition(ChannelCondition.EXIT_STATUS, timeOut);
@@ -95,19 +95,19 @@ public class RemoteShellExecutor {
     }
 
     /**
-     * @param srcFile  要下载的文件
-     * @param saveFile 保存目录
+     * @param target 要下载的文件
+     * @param local 保存目录
      * @return boolean
      */
-    public boolean download(String srcFile, String saveFile) throws Exception {
+    public boolean download(String target, String local) throws Exception {
         Connection conn = connectionObjectPool.borrowObject();
         // Session session = conn.openSession();
         SCPClient client = conn.createSCPClient();
         boolean flag = false;
-        String filename = srcFile.substring(srcFile.lastIndexOf("/") + 1);
+        String filename = target.substring(target.lastIndexOf("/") + 1);
         if (filename.contains(".")) {
             try {
-                client.get(srcFile, saveFile);
+                client.get(target, local);
                 flag = true;
             } catch (Exception ignored) {
 
@@ -135,14 +135,14 @@ public class RemoteShellExecutor {
          *
          * @param stdoutString
          */
-        void getStdoutString(String stdoutString);
+        void setStdoutString(String stdoutString);
 
         /**
          * 获取错误输出字符串
          *
          * @param stderrString
          */
-        void getStderrString(String stderrString);
+        void setStderrString(String stderrString);
     }
 
 }

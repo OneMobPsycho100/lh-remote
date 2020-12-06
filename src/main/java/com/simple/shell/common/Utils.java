@@ -1,5 +1,7 @@
 package com.simple.shell.common;
 
+import org.springframework.util.StringUtils;
+
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -24,4 +26,24 @@ public class Utils {
     public static LocalDateTime ofMilliseconds(Long milliseconds) {
         return new Date(milliseconds).toInstant().atOffset(ZoneOffset.of(ZONE)).toLocalDateTime();
     }
+
+    /**
+     * getPath
+     *
+     * @param path path
+     * @return path
+     */
+    public static String getPath(String path) {
+        if (StringUtils.hasText(path)) {
+            path = path.trim();
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
+            if (path.endsWith("/")) {
+                path = path.substring(0, path.length() - 1);
+            }
+        }
+        return path;
+    }
+
 }

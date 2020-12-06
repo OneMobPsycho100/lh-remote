@@ -7,15 +7,16 @@ import com.simple.shell.config.RemoteShellExecutor;
 import com.simple.shell.dao.ScriptRepository;
 import com.simple.shell.pojo.ScriptEntity;
 import com.simple.shell.pojo.ScriptExpandEntity;
+import com.simple.shell.service.IScriptExpandService;
+import com.simple.shell.service.IScriptService;
 import com.simple.shell.vo.ResScriptExpandVO;
 import com.simple.shell.vo.ResScriptInfoVO;
 import com.simple.shell.vo.req.ReqExecuteVO;
 import com.simple.shell.vo.req.ReqScriptExpandVO;
 import com.simple.shell.vo.req.ReqScriptInfoVO;
-import com.simple.shell.service.IScriptExpandService;
-import com.simple.shell.service.IScriptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -125,6 +126,11 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptRepository, ScriptEntit
     @Override
     public void execute(ReqExecuteVO reqExecuteVO) throws Exception {
         remoteShellExecutor.exec(buildCmd(reqExecuteVO));
+    }
+
+    @Override
+    public String getCmdInfo(ReqExecuteVO reqExecuteVO) {
+        return buildCmd(reqExecuteVO);
     }
 
     private String buildCmd(ReqExecuteVO reqExecuteVO) {

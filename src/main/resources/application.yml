@@ -15,11 +15,17 @@ spring:
       enabled: true
       path: /h2-console
 
+  # remote server
   remote:
     exec:
       ip: 192.168.172.129
       osUsername: cmz
       password: Chenjia1
+      complete: outinfo.text
+      local: D:\\remoteFileDir
+      filePath: -/home/uer
+        -/home/q
+        -/home/qd
   upload:
     path: upload
 

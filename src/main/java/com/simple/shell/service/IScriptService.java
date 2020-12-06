@@ -7,6 +7,7 @@ import com.simple.shell.pojo.ScriptEntity;
 import com.simple.shell.vo.ResScriptInfoVO;
 import com.simple.shell.vo.req.ReqExecuteVO;
 import com.simple.shell.vo.req.ReqScriptInfoVO;
+import org.springframework.core.io.Resource;
 
 /**
  * IScriptService
@@ -27,7 +28,7 @@ public interface IScriptService extends IService<ScriptEntity> {
      * 查询脚本列表
      *
      * @param page page
-     * @return
+     * @return ResScriptInfoVO
      */
     IPage<ResScriptInfoVO> pageScript(Page<ScriptEntity> page);
 
@@ -52,4 +53,13 @@ public interface IScriptService extends IService<ScriptEntity> {
      * @param reqExecuteVO reqExecuteVO
      */
     void execute(ReqExecuteVO reqExecuteVO) throws Exception;
+
+    /**
+     * 当前执行的命令信息
+     *
+     * @param reqExecuteVO reqExecuteVO
+     * @return 执行的命令信息
+     */
+    String getCmdInfo(ReqExecuteVO reqExecuteVO);
+
 }
