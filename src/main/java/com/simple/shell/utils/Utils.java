@@ -1,4 +1,4 @@
-package com.simple.shell.common;
+package com.simple.shell.utils;
 
 import org.springframework.util.StringUtils;
 

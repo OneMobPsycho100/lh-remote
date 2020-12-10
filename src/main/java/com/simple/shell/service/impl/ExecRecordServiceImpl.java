@@ -3,7 +3,7 @@ package com.simple.shell.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.simple.shell.common.Utils;
+import com.simple.shell.utils.Utils;
 import com.simple.shell.dao.ExecRecordRepository;
 import com.simple.shell.pojo.ExecRecordEntity;
 import com.simple.shell.vo.ResExecRecordVO;

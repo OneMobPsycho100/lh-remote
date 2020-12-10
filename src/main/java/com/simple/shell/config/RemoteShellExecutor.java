@@ -73,6 +73,8 @@ public class RemoteShellExecutor {
                 outErr = stream2String(stuErr, this.charset);
                 callback.setStdoutString(outStr);
                 callback.setStderrString(outErr);
+                logUtil.info("success: {}",outStr);
+                logUtil.info("error: {}", outErr);
             }
             if (resultCode != null) {
                 session.waitForCondition(ChannelCondition.EXIT_STATUS, timeOut);

@@ -33,6 +33,11 @@ public class ReqScriptExpandVO {
      */
     private String description;
 
+    /**
+     * 权重
+     */
+    private Integer weight;
+
 
     public String getName() {
         return name;
@@ -64,5 +69,21 @@ public class ReqScriptExpandVO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

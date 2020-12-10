@@ -1,6 +1,6 @@
 package com.simple.shell.task;
 
-import com.simple.shell.common.Utils;
+import com.simple.shell.utils.Utils;
 import com.simple.shell.config.RemoteCallback;
 import com.simple.shell.config.RemoteShellExecutor;
 import com.simple.shell.config.RemoteShellProperties;

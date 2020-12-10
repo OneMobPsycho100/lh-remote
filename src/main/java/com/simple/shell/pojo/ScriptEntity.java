@@ -24,16 +24,10 @@ public class ScriptEntity extends BaseEntity {
     @TableField("content")
     private String content;
 
-    /**
-     * 0 不生成文件，1生成文件
-     */
-    private Integer generateFile;
-
-    /**
-     * 脚本文件生成目录
-     */
-    @TableField("directory")
-    private String directory;
+//    /**
+//     * 0 不生成文件，1生成文件
+//     */
+//    private Integer generateFile;
 
     /**
      * 脚本描述信息
@@ -57,14 +51,6 @@ public class ScriptEntity extends BaseEntity {
         this.content = content;
     }
 
-    public String getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(String directory) {
-        this.directory = directory;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -73,11 +59,11 @@ public class ScriptEntity extends BaseEntity {
         this.description = description;
     }
 
-    public Integer getGenerateFile() {
-        return generateFile;
-    }
-
-    public void setGenerateFile(Integer generateFile) {
-        this.generateFile = generateFile;
-    }
+//    public Integer getGenerateFile() {
+//        return generateFile;
+//    }
+//
+//    public void setGenerateFile(Integer generateFile) {
+//        this.generateFile = generateFile;
+//    }
 }
