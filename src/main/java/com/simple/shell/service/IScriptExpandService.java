@@ -2,6 +2,7 @@ package com.simple.shell.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.simple.shell.pojo.ScriptExpandEntity;
+import com.simple.shell.vo.ResScriptExpandVO;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface IScriptExpandService extends IService<ScriptExpandEntity> {
      * @param id
      * @return
      */
-    List<ScriptExpandEntity> listExpandByScriptId(Integer id);
+    List<ResScriptExpandVO> listExpandByScriptId(Integer id);
 }

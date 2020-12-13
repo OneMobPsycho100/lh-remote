@@ -25,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,14 +86,20 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptRepository, ScriptEntit
         Page<ScriptEntity> entityPage = lambdaQuery()
                 .orderByDesc(ScriptEntity::getCreateTime).page(page);
         List<ResScriptInfoVO> resScriptInfoVOS = entityPage.getRecords().stream().map(it -> {
+            Integer id = it.getId();
+            List<ResScriptExpandVO> scriptExpandVOList = scriptExpandService.listExpandByScriptId(id);
             ResScriptInfoVO resScriptInfoVO = new ResScriptInfoVO();
             BeanUtils.copyProperties(it, resScriptInfoVO);
+            resScriptInfoVO.setResScriptExpandVOList(scriptExpandVOList
+                    .stream().filter(vo -> vo.getType() == 1).collect(Collectors.toList()));
             return resScriptInfoVO;
         }).collect(Collectors.toList());
+
         Page<ResScriptInfoVO> resultPage = new Page<>(entityPage.getCurrent(), entityPage.getSize());
         resultPage.setRecords(resScriptInfoVOS);
         resultPage.setTotal(entityPage.getTotal());
         resultPage.setPages(entityPage.getPages());
+
         return resultPage;
     }
 
@@ -104,11 +111,7 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptRepository, ScriptEntit
         ResScriptInfoVO resScriptInfoVO = new ResScriptInfoVO();
         BeanUtils.copyProperties(scriptEntity, resScriptInfoVO);
 
-        List<ScriptExpandEntity> scriptExpandList = scriptExpandService.listExpandByScriptId(id);
-        if (CollectionUtils.isEmpty(scriptExpandList)) {
-            resScriptInfoVO.setResScriptExpandVOList(Collections.emptyList());
-            return resScriptInfoVO;
-        }
+        List<ResScriptExpandVO> scriptExpandList = scriptExpandService.listExpandByScriptId(id);
         List<ResScriptExpandVO> reqScriptExpandVOList = scriptExpandList.stream().map(it -> {
             ResScriptExpandVO reqScriptExpandVO = new ResScriptExpandVO();
             BeanUtils.copyProperties(it, reqScriptExpandVO);
