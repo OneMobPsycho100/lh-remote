@@ -28,6 +28,7 @@ public class BaseEntity {
 
     public <T> T buildAddEntity() {
         this.setCreateTime(LocalDateTime.now());
+        this.setUpdateTime(LocalDateTime.now());
         return (T) this;
     }
 

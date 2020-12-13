@@ -10,15 +10,23 @@ import java.time.LocalDateTime;
  */
 public class ResExecRecordVO {
 
+    private Integer id;
+
     /**
      * 关联脚本 ID
      */
     private Integer scriptId;
 
     /**
+     * 脚本名称
+     */
+    private String scriptName;
+
+    /**
      * 执行记录
      */
     private String name;
+
 
     /**
      * 可能是异常信息或者其它
@@ -74,5 +82,21 @@ public class ResExecRecordVO {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getScriptName() {
+        return scriptName;
+    }
+
+    public void setScriptName(String scriptName) {
+        this.scriptName = scriptName;
     }
 }

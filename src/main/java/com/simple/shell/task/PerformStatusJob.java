@@ -1,5 +1,7 @@
 package com.simple.shell.task;
 
+import com.simple.shell.pojo.ScriptExpandEntity;
+import com.simple.shell.service.IScriptExpandService;
 import com.simple.shell.utils.Utils;
 import com.simple.shell.config.RemoteCallback;
 import com.simple.shell.config.RemoteShellExecutor;
@@ -38,23 +40,27 @@ public class PerformStatusJob {
 
     private final RemoteShellProperties properties;
 
+    private final IScriptExpandService scriptExpandService;
+
     private static final String FIND = "find ";
 
     @Autowired
     public PerformStatusJob(IExecRecordService execRecordService,
                             RemoteShellExecutor remoteShellExecutor,
                             IRecordFileService recordFileService,
-                            RemoteShellProperties properties) {
+                            RemoteShellProperties properties, IScriptExpandService scriptExpandService) {
         this.execRecordService = execRecordService;
         this.remoteShellExecutor = remoteShellExecutor;
         this.recordFileService = recordFileService;
         this.properties = properties;
+        this.scriptExpandService = scriptExpandService;
     }
 
     /**
      * 定时查询脚本任务是否执行成功 30分钟执行一次
      */
-    @Scheduled(cron = "0 0/30 * * * ? ")
+    // @Scheduled(cron = "0 0/30 * * * ? ")
+    //  @Scheduled(cron = "0/10 * * * * ?")
     private void performStatus() {
 
         try {
@@ -92,4 +98,48 @@ public class PerformStatusJob {
         }
 
     }
+
+
+    @Scheduled(cron = "0/10 * * * * ?")
+    private void performStatusViolence() {
+
+        try {
+            List<ExecRecordEntity> recordList = execRecordService.lambdaQuery()
+                    .eq(ExecRecordEntity::getStatus, 0).list();
+            if (CollectionUtils.isEmpty(recordList)) {
+                return;
+            }
+            ExecRecordEntity execRecordEntity = recordList.get(0);
+
+            List<ScriptExpandEntity> expandList = scriptExpandService.lambdaQuery()
+                    .eq(ScriptExpandEntity::getScriptId, execRecordEntity.getScriptId()).eq(ScriptExpandEntity::getType, 0).list();
+            if (CollectionUtils.isEmpty(expandList)) {
+                return;
+            }
+
+            // 脚本执行成功就将服务器文件转存，便于下载
+            for (ScriptExpandEntity expandEntity : expandList) {
+                String content = expandEntity.getContent();
+                String[] filePathArr = content.split(",");
+                String remote = filePathArr[0];
+                String local = filePathArr[1];
+                String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-dd-MM"));
+                Integer recordId = execRecordEntity.getId();
+                String prefix = local + today + recordId + "\\";
+                String fileName = remoteShellExecutor.download(remote, prefix);
+                RecordFileEntity fileEntity = new RecordFileEntity();
+                fileEntity.setRecordId(recordId);
+                fileEntity.setName(expandEntity.getName());
+                fileEntity.setAddress(prefix + fileName);
+                recordFileService.save(fileEntity);
+            }
+
+            execRecordEntity.setStatus(1);
+            execRecordService.updateById(execRecordEntity);
+        } catch (Exception e) {
+            logger.error("定时任务执行出错：", e);
+        }
+
+    }
+
 }

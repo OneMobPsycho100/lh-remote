@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class RecordFileServiceImpl extends ServiceImpl<RecordFileRepository, RecordFileEntity> implements IRecordFileService {
 
+
     @Override
     public List<ResRecordFileVO> listRecordFileByRecordId(Integer id) {
         return this.lambdaQuery().eq(RecordFileEntity::getRecordId, id).list()

@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.simple.shell.config.RemoteCallback;
 import com.simple.shell.config.RemoteShellExecutor;
 import com.simple.shell.dao.ScriptRepository;
+import com.simple.shell.pojo.ExecRecordEntity;
 import com.simple.shell.pojo.ScriptEntity;
 import com.simple.shell.pojo.ScriptExpandEntity;
+import com.simple.shell.service.IExecRecordService;
 import com.simple.shell.service.IScriptExpandService;
 import com.simple.shell.service.IScriptService;
 import com.simple.shell.vo.ResScriptExpandVO;
@@ -22,6 +24,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,10 +43,15 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptRepository, ScriptEntit
 
     private final RemoteShellExecutor remoteShellExecutor;
 
+    private final IExecRecordService execRecordService;
+
     @Autowired
-    public ScriptServiceImpl(IScriptExpandService scriptExpandService, RemoteShellExecutor remoteShellExecutor) {
+    public ScriptServiceImpl(IScriptExpandService scriptExpandService,
+                             RemoteShellExecutor remoteShellExecutor,
+                             IExecRecordService execRecordService) {
         this.scriptExpandService = scriptExpandService;
         this.remoteShellExecutor = remoteShellExecutor;
+        this.execRecordService = execRecordService;
     }
 
     @Override
@@ -126,10 +134,23 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptRepository, ScriptEntit
     @Override
     public void execute(ReqExecuteVO reqExecuteVO) throws Exception {
         RemoteCallback callback = new RemoteCallback();
-        remoteShellExecutor.exec(buildCmd(reqExecuteVO), callback);
+        String cmd = buildCmd(reqExecuteVO);
+        remoteShellExecutor.exec(cmd, callback);
         if (!StringUtils.isEmpty(callback.getStderrString())) {
             throw new RuntimeException(callback.getStderrString().trim());
         }
+
+        // 保存执行记录信息
+        ScriptEntity scriptEntity = this.getById(reqExecuteVO.getId());
+        ExecRecordEntity recordEntity = new ExecRecordEntity();
+        recordEntity.setScriptName(scriptEntity.getName());
+        recordEntity.setScriptId(scriptEntity.getId());
+        recordEntity.setContent(cmd);
+        recordEntity.setName(scriptEntity.getName() + "-" + LocalDateTime.now());
+        recordEntity.setStatus(0);
+        recordEntity.buildAddEntity();
+        execRecordService.save(recordEntity);
+
     }
 
     @Override

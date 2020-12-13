@@ -7,6 +7,8 @@ import ch.ethz.ssh2.Session;
 import com.simple.shell.utils.LogUtil;
 import org.apache.commons.pool2.ObjectPool;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class RemoteShellExecutor {
@@ -73,7 +75,7 @@ public class RemoteShellExecutor {
                 outErr = stream2String(stuErr, this.charset);
                 callback.setStdoutString(outStr);
                 callback.setStderrString(outErr);
-                logUtil.info("success: {}",outStr);
+                logUtil.info("success: {}", outStr);
                 logUtil.info("error: {}", outErr);
             }
             if (resultCode != null) {
@@ -98,10 +100,10 @@ public class RemoteShellExecutor {
 
     /**
      * @param target 要下载的文件
-     * @param local 保存目录
+     * @param local  保存目录
      * @return boolean
      */
-    public boolean download(String target, String local) throws Exception {
+    public String download(String target, String local) throws Exception {
         Connection conn = connectionObjectPool.borrowObject();
         // Session session = conn.openSession();
         SCPClient client = conn.createSCPClient();
@@ -109,13 +111,19 @@ public class RemoteShellExecutor {
         String filename = target.substring(target.lastIndexOf("/") + 1);
         if (filename.contains(".")) {
             try {
+                File path = new File(local);
+                if (!path.exists()) {
+                    if (!path.mkdir()) {
+                        throw new FileNotFoundException("文件夹创建失败!");
+                    }
+                }
                 client.get(target, local);
                 flag = true;
             } catch (Exception ignored) {
-
+                ignored.printStackTrace();
             }
         }
-        return flag;
+        return filename;
     }
 
     private String stream2String(InputStream inputStream, String charset) throws Exception {

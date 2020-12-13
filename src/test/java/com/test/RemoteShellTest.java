@@ -22,7 +22,7 @@ public class RemoteShellTest {
 
     @org.junit.Test
     public void test() throws Exception {
-        boolean exec = remoteShellExecutor.download("/home/cmz/files.csv", "C:\\Users\\Administrator\\Desktop");
+        String exec = remoteShellExecutor.download("/home/cmz/files.csv", "C:\\Users\\Administrator\\Desktop");
         System.out.println(exec);
     }
 }

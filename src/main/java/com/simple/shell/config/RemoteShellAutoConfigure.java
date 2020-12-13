@@ -12,14 +12,13 @@ import org.springframework.context.annotation.Configuration;
 public class RemoteShellAutoConfigure {
 
     /**
-     *
      * @return {@link RemoteShellProperties}
      */
     @Bean
     @ConfigurationProperties(prefix = RemoteShellProperties.PREFIX)
-    @ConditionalOnProperty(prefix = RemoteShellProperties.PREFIX,value = {"ip","osUsername"})
+    @ConditionalOnProperty(prefix = RemoteShellProperties.PREFIX, value = {"ip", "osUsername"})
     @ConditionalOnMissingBean(RemoteShellProperties.class)
-    public RemoteShellProperties remoteShellProperties(){
+    public RemoteShellProperties remoteShellProperties() {
         return new RemoteShellProperties();
     }
 
@@ -38,7 +37,7 @@ public class RemoteShellAutoConfigure {
     @ConditionalOnSingleCandidate(RemoteShellProperties.class)
     @ConditionalOnMissingBean(RemoteExecConnectionFactory.class)
     public RemoteExecConnectionFactory remoteExecConnectionFactory(
-            @Autowired RemoteShellProperties remoteShellProperties) {
+            RemoteShellProperties remoteShellProperties) {
         return new RemoteExecConnectionFactory(remoteShellProperties);
     }
 
@@ -46,17 +45,17 @@ public class RemoteShellAutoConfigure {
     @ConditionalOnBean({RemoteExecConnectionFactory.class, RemoteExecPoolConfigure.class})
     @ConditionalOnMissingBean(RemoteExecConnectionPool.class)
     public RemoteExecConnectionPool remoteExecConnectionPool(
-            @Autowired RemoteExecConnectionFactory remoteExecConnectionFactory,
-            @Autowired RemoteExecPoolConfigure remoteExecPoolConfigure) {
-        return new RemoteExecConnectionPool(remoteExecConnectionFactory,remoteExecPoolConfigure);
+            RemoteExecConnectionFactory remoteExecConnectionFactory,
+            RemoteExecPoolConfigure remoteExecPoolConfigure) {
+        return new RemoteExecConnectionPool(remoteExecConnectionFactory, remoteExecPoolConfigure);
     }
 
     @Bean
     @ConditionalOnBean({RemoteExecConnectionPool.class, RemoteShellProperties.class})
     @ConditionalOnMissingBean(RemoteShellExecutor.class)
     public RemoteShellExecutor remoteShellExecutor(
-            @Autowired RemoteShellProperties remoteShellProperties,
-            @Autowired RemoteExecConnectionPool remoteExecConnectionPool) {
-        return new RemoteShellExecutor(remoteExecConnectionPool,remoteShellProperties.getCharset(),remoteShellProperties.getTimeout());
+            RemoteShellProperties remoteShellProperties,
+            RemoteExecConnectionPool remoteExecConnectionPool) {
+        return new RemoteShellExecutor(remoteExecConnectionPool, remoteShellProperties.getCharset(), remoteShellProperties.getTimeout());
     }
 }

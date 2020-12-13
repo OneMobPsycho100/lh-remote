@@ -24,6 +24,9 @@ public class Utils {
      * @return LocalDateTime
      */
     public static LocalDateTime ofMilliseconds(Long milliseconds) {
+        if (milliseconds == null) {
+            return null;
+        }
         return new Date(milliseconds).toInstant().atOffset(ZoneOffset.of(ZONE)).toLocalDateTime();
     }
 
