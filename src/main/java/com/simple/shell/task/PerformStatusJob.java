@@ -100,7 +100,7 @@ public class PerformStatusJob {
     }
 
 
-    @Scheduled(cron = "0/10 * * * * ?")
+ //   @Scheduled(cron = "0/10 * * * * ?")
     private void performStatusViolence() {
 
         try {

@@ -15,4 +15,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .maxAge(3600)
                 .allowCredentials(true);
     }
+
+    @Override
+    public void addResourceHandlers(org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+    }
 }
